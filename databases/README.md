@@ -1,5 +1,34 @@
 ﻿# GitLab 7.2.0 bitnami to GitLab 7.11.4 Omnibus
+
 ## Mysql To PostgreSQL
+
+数据库差异如下:
+
+|7.11.0                 |7.1.0
+|-----------------------|------
+|application_settings   | no
+|>identities            | from {users.extern_uid, users.provider}
+|>keys                  | no [public]
+|label_links            | no
+|labels                 | no
+|^members               | no
+|^merge_requests        | no [locked_at]
+|^notes [system(boolean)] | notes [system(tinyint)]
+|oauth_access_grants    | no
+|oauth_access_tokens    | no
+|oauth_applications     | no
+|project_import_data    | no
+|^projects              | no [avatar, star_count, import_type, import_source]
+|^protected_branches    | no [developers_can_push]
+|^services no [token, project_url, subdomain, room, recipients, api_key] | no [properties, template, push_events, issues_events, merge_requests_events, tag_push_events, note_events]
+|^snippets no [private] | no [visibility_level]
+|subscriptions          | no
+|^tags                  | no [taggings_count]
+|^users no [extern_uid, provider] | no [github_access_token, gitlab_access_token,notification_email, hide_no_password, password_automatically_set, bitbucket_access_token, bitbucket_access_token_secret, location character, public_email, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, otp_required_for_login, otp_backup_codes]
+|users_star_projects    | no
+|no {to identities}     | users_groups
+|no {to identities}     | users_projects
+
 * [导入表格未发生变化的数据](same_with_7.11/README.md)
 
 ## 导入其他有变化的数据表格
