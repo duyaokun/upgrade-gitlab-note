@@ -10,16 +10,16 @@ do
 done
 
 function tar_sql_files(){
-local file_type=$1
-local folder=$2
-local tar_file=${folder}.tar.gz
+  local file_type=$1
+  local folder=$2
+  local tar_file=${folder}.tar.gz
 
-rm -rf ${folder}
-mkdir ${folder}
-mv *.${file_type} ${folder}
-rm ${tar_file}
-tar zcvf ${tar_file} ${folder}
-rm -rf ${folder}
+  rm -rf ${folder}
+  mkdir ${folder}
+  mv *.${file_type} ${folder}
+  rm ${tar_file}
+  tar zcvf ${tar_file} ${folder}
+  rm -rf ${folder}
 }
 
 echo "start tar mysql files"
