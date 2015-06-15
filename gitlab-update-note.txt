@@ -1,0 +1,50 @@
+# backup
+*installdir* : `gitlab-6.9.2.-1`
+
+* Change to the directory in which you wish to save your backup.
+
+	> cd /your/directory
+
+* Stop all servers.
+
+	> $ sudo *installdir*/ctlscript.sh stop
+* Create a compressed file with the stack contents.
+
+	> $ sudo tar -pczvf application-backup.tar.gz *installdir*
+* Restart all servers.
+
+	> $ sudo *installdir*/ctlscript.sh start
+
+## ±¸·Ý mysql
+password: "6645a79e86"
+
+mysql to postgresql
+
+> $ mysqldump --compatible=postgresql --default-character-set=utf8 \
+-r databasename.mysql -u root databasename -p
+
+
+|7.11.0               |7.1.0
+|---------------------|------
+|application_settings | no
+|>identities          | from {users.extern_uid, users.provider}
+|>keys                | no [public]
+|label_links          | no
+|labels               | no
+|^members             | no
+|^merge_requests      | no [locked_at]
+|^notes [system(boolean)] | notes [system(tinyint)]
+|oauth_access_grants  | no
+|oauth_access_tokens  | no
+|oauth_applications   | no
+|project_import_data  | no
+|^projects            | no [avatar, star_count, import_type, import_source]
+|^protected_branches  | no [developers_can_push]
+|^services no [token, project_url, subdomain, room, recipients, api_key] | no [properties, template, push_events, issues_events, merge_requests_events, tag_push_events, note_events]
+|^snippets no [private]| no [visibility_level]
+|subscriptions        | no
+|^tags                | no [taggings_count]
+|^users no [extern_uid, provider] | no [github_access_token, gitlab_access_token,notification_email, hide_no_password, password_automatically_set, bitbucket_access_token, bitbucket_access_token_secret, location character, public_email, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, otp_required_for_login, otp_backup_codes]
+|users_star_projects  | no
+|no                   | users_groups
+|no                   | users_projects
