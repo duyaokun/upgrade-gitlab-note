@@ -9,7 +9,7 @@ if [ "$action" == "import" ]; then
   for table in ${same_tables[@]}
   do
     echo "Start import table ${table}"
-    ./import.sh ${table}
+    ../import.sh ${table}
   done
   
 else
@@ -18,7 +18,7 @@ else
   for table in ${same_tables[@]}
   do
     echo "start export table ${table}"
-    ./export.sh ${table}
+    ../export.sh ${table}
     echo "start convert table ${table}"
     python ../db_converter.py ${table}.sql ${table}.psql
   done
