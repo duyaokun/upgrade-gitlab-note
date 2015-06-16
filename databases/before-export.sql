@@ -30,3 +30,6 @@ CREATE TABLE members (
 INSERT INTO members ( user_id, source_id, source_type, access_level, notification_level, type ) SELECT user_id, group_id, 'Namespace', group_access, notification_level, 'GroupMember' FROM users_groups;
 
 INSERT INTO members ( user_id, source_id, source_type, access_level, notification_level, type ) SELECT user_id, project_id, 'Project', project_access, notification_level, 'ProjectMember' FROM users_projects;
+
+--notes 表格迁移
+ALTER TABLE `notes` CHANGE `system` `system` CHAR(1) NOT NULL DEFAULT '0';

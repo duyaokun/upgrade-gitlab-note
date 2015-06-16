@@ -2,3 +2,4 @@ SELECT setval('identities_id_seq', max(id)) FROM identities;
 SELECT setval('keys_id_seq', max(id)) FROM keys;
 SELECT setval('members_id_seq', max(id)) FROM members;
 SELECT setval('merge_requests_id_seq', max(id)) FROM merge_requests;
+SELECT setval('notes_id_seq', max(id)) FROM notes;

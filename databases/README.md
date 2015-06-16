@@ -133,10 +133,3 @@ $ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/s
 $ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r tags.sql -u bitnami bitnami_gitlab tags -p
 $ python db_converter.py tags.sql tags.psql
 $ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/tags.psql
-
-### notes
-$ ALTER TABLE `notes` CHANGE `system` `system` CHAR(1) NOT NULL DEFAULT '0';
-$ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r notes.sql -u bitnami bitnami_gitlab notes -p
-$ ALTER TABLE `notes` CHANGE `system` `system` TINYINT(1) NOT NULL DEFAULT '0';
-$ python db_converter.py notes.sql notes.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/notes.psql
