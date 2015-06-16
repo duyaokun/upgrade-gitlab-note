@@ -55,7 +55,7 @@ UPDATE tags SET taggings_count=(SELECT COUNT(1) FROM taggings WHERE taggings.tag
 -- users 表格迁移
 ALTER TABLE `users` ADD `notification_email` character varying(255);
 ALTER TABLE `users` ADD `public_email` character varying(255);
-UPDATE users SET public_email=email notification_email=email;
+UPDATE users SET public_email=email, notification_email=email;
 -- 注意: 必须迁移 identities 才可以执行下面这个操作
 -- ALTER TABLE `users` DROP COLUMN `extern_uid`;
 -- ALTER TABLE `users` DROP COLUMN `provider`;
