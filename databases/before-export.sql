@@ -33,3 +33,11 @@ INSERT INTO members ( user_id, source_id, source_type, access_level, notificatio
 
 --notes 表格迁移
 ALTER TABLE `notes` CHANGE `system` `system` CHAR(1) NOT NULL DEFAULT '0';
+
+--projects 表格迁移
+ALTER TABLE `projects` CHANGE `issues_enabled` `issues_enabled` CHAR(1) NOT NULL DEFAULT '1';
+ALTER TABLE `projects` CHANGE `wall_enabled` `wall_enabled` CHAR(1) NOT NULL DEFAULT '1';
+ALTER TABLE `projects` CHANGE `merge_requests_enabled` `merge_requests_enabled` CHAR(1) NOT NULL DEFAULT '1';
+ALTER TABLE `projects` CHANGE `wiki_enabled` `wiki_enabled` CHAR(1) NOT NULL DEFAULT '1';
+ALTER TABLE `projects` CHANGE `snippets_enabled` `snippets_enabled` CHAR(1) NOT NULL DEFAULT '1';
+ALTER TABLE `projects` CHANGE `archived` `archived` CHAR(1) NOT NULL DEFAULT '0';

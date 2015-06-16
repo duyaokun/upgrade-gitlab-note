@@ -66,12 +66,6 @@ otp_secret | encrypted_otp_secret_iv | encrypted_otp_secret_salt | otp_required_
 (1 row)
 ```
 
-### projects
-$ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r projects.sql -u bitnami bitnami_gitlab projects -p
-> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r projects.sql -u root test projects -p
-$ python db_converter.py projects.sql projects.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/projects.psql
-
 ### protected_branches
 $ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r protected_branches.sql -u bitnami bitnami_gitlab protected_branches -p
 $ python db_converter.py protected_branches.sql protected_branches.psql
