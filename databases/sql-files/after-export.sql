@@ -1,10 +1,10 @@
---ALTER TABLE `users` ADD `extern_uid` varchar(255) DEFAULT NULL;
---ALTER TABLE `users` ADD `provider` varchar(255) DEFAULT NULL;
---UPDATE users SET extern_uid=i.extern_uid provider=i.provider;
+-- ALTER TABLE `users` ADD `extern_uid` varchar(255) DEFAULT NULL;
+-- ALTER TABLE `users` ADD `provider` varchar(255) DEFAULT NULL;
+-- UPDATE users SET extern_uid=i.extern_uid provider=i.provider;
 ALTER TABLE `users` DROP COLUMN `public_email`;
 ALTER TABLE `users` DROP COLUMN `notification_email`;
 
---删除之前创建的表格 
+-- 删除之前创建的表格 
 DROP TABLE identities;
 DROP TABLE members;
 
