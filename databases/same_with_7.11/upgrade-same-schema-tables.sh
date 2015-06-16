@@ -17,10 +17,7 @@ else
 
   for table in ${same_tables[@]}
   do
-    echo "start export table ${table}"
     ../export.sh ${table}
-    echo "start convert table ${table}"
-    python ../db_converter.py ${table}.sql ${table}.psql
   done
 
   echo "start tar mysql files"
