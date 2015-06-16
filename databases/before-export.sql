@@ -51,3 +51,11 @@ UPDATE snippets SET visibility_level=1 WHERE visibility_level=2;
 --tags 表格迁移
 ALTER TABLE `tags` ADD `taggings_count` INTEGER DEFAULT 0 NOT NULL;
 UPDATE tags SET taggings_count=(SELECT COUNT(1) FROM taggings WHERE taggings.tag_id=tags.id);
+
+--users 表格迁移
+ALTER TABLE `users` ADD `notification_email` character varying(255);
+ALTER TABLE `users` ADD `public_email` character varying(255) DEFAULT ''::character varying NOT NULL;
+UPDATE users SET public_email=email notification_email=email;
+-- 注意: 必须迁移 identities 才可以执行下面这个操作
+--ALTER TABLE `users` DROP COLUMN `extern_uid`;
+--ALTER TABLE `users` DROP COLUMN `provider`;

@@ -35,36 +35,9 @@
 
 ## 导入其他有变化的数据表格
 ### users
-$ ./mysqldump --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r users.sql -u bitnami bitnami_gitlab users -p
-> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r users.sql -u root test users -p
-$ python db_converter.py users.sql users.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/users.psql
+须手动在 Windows 上删除 extern_uid 和 provider 两列
 
-删除新版数据库
-```
-  id |       email       |                      encrypted_password                      | reset_password_token | reset_password_sent_at | remember_created_at | sign_in_count
- |     current_sign_in_at     |      last_sign_in_at       | current_sign_in_ip | last_sign_in_ip |         created_at         |         updated_at         |     name      
-| admin | projects_limit | skype | linkedin | twitter | authentication_token | theme_id | bio | failed_attempts | locked_at | username | can_create_group | can_create_team 
-| state  | color_scheme_id | notification_level | password_expires_at | created_by_id | last_credential_check_at | avatar |                        confirmation_token       
-                 |        confirmed_at        |   confirmation_sent_at   |    unconfirmed_email    | hide_no_ssh_key | website_url | github_access_token | gitlab_access_tok
-en |   notification_email    | hide_no_password | password_automatically_set | bitbucket_access_token | bitbucket_access_token_secret | location | public_email | encrypted_
-otp_secret | encrypted_otp_secret_iv | encrypted_otp_secret_salt | otp_required_for_login | otp_backup_codes 
-----+-------------------+--------------------------------------------------------------+----------------------+------------------------+---------------------+--------------
--+----------------------------+----------------------------+--------------------+-----------------+----------------------------+----------------------------+---------------
-+-------+----------------+-------+----------+---------+----------------------+----------+-----+-----------------+-----------+----------+------------------+-----------------
-+--------+-----------------+--------------------+---------------------+---------------+--------------------------+--------+-------------------------------------------------
------------------+----------------------------+--------------------------+-------------------------+-----------------+-------------+---------------------+------------------
----+-------------------------+------------------+----------------------------+------------------------+-------------------------------+----------+--------------+-----------
------------+-------------------------+---------------------------+------------------------+------------------
-  1 | admin@example.com | $2a$10$gBEesx./3su/dUGq7fwHGO9BbH2Gp3GMpw5/vbOafAVID5x.pVaKa |                      |                        |                     |             3
- | 2015-06-14 07:28:50.061969 | 2015-06-12 08:58:01.181254 | 127.0.0.1          | 127.0.0.1       | 2015-06-12 06:13:02.661432 | 2015-06-14 07:28:50.091154 | Administrator 
-| t     |          10000 |       |          |         | ttASR1-f_mvSFyxZbtz5 |        2 |     |               0 |           | root     | t                | f               
-| active |               1 |                  1 |                     |               |                          |        | be02959a589adcacc4ac0bf982cc12881849c09900887cb6
-2be9201beaea9729 | 2015-06-12 06:13:02.943674 | 2015-06-13 10:11:13.3463 | duyaokun@carystudio.com | f               |             |                     |                  
-   | duyaokun@carystudio.com | f                | f                          |                        |                               |          |              |           
-           |                         |                           |                        | null
-(1 row)
-```
+> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r users.sql -u root test users -p
 
 ### services
 $ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r services.sql -u bitnami bitnami_gitlab services -p
