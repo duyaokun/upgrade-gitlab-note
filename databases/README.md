@@ -31,13 +31,18 @@
 |no {to identities}     | users_groups
 |no {to identities}     | users_projects
 
-* [导入表格未发生变化的数据](same_with_7.11/README.md)
+1. 在旧服务数据中执行 SQL 脚本 `before-export.psql`
+2. 在旧服务器运行脚本`./upgrade.sh`
+3. 在旧服务数据中执行 SQL 脚本 `after-export.psql`
+4. 将导出的数据库压缩包下载至本地,用数据库管理工具(如 phpmyadmin )删除 `extern_uid` 和 `provider` 两列,然后导出转成 *psql* 格式
+
+	> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r users.sql -u root test users -p
+5. 将转换好的 psql 数据库上传至新服务器
+6. 在新服务数据中执行 SQL 脚本 `before-import.psql`
+7. 在新服务器运行脚本`./upgrade-same-schema-tables.sh import`
+8. 在新服务数据中执行 SQL 脚本 `after-import.psql`
 
 ## 导入其他有变化的数据表格
-### users
-须手动在 Windows 上删除 extern_uid 和 provider 两列
-
-> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r users.sql -u root test users -p
 
 ### services
 $ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r services.sql -u bitnami bitnami_gitlab services -p
