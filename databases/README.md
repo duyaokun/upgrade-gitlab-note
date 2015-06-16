@@ -66,28 +66,6 @@ otp_secret | encrypted_otp_secret_iv | encrypted_otp_secret_salt | otp_required_
 (1 row)
 ```
 
-### members
-> CREATE TABLE members (
-    id integer KEY NOT NULL AUTO_INCREMENT,
-    access_level integer NOT NULL,
-    source_id integer NOT NULL,
-    source_type character varying(255) NOT NULL,
-    user_id integer,
-    notification_level integer NOT NULL,
-    type character varying(255),
-    created_at timestamp,
-    updated_at timestamp,
-    created_by_id integer,
-    invite_email character varying(255),
-    invite_token character varying(255),
-    invite_accepted_at timestamp
-);
-> INSERT INTO members ( user_id, source_id, source_type, access_level, notification_level, type ) SELECT user_id, group_id, 'Namespace', group_access, notification_level, 'GroupMember' FROM users_groups
-> INSERT INTO members ( user_id, source_id, source_type, access_level, notification_level, type ) SELECT user_id, project_id, 'Project', project_access, notification_level, 'ProjectMember' FROM users_projects
-> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r members.sql -u root test members -p
-$ python db_converter.py members.sql members.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/members.psql
-
 ### projects
 $ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r projects.sql -u bitnami bitnami_gitlab projects -p
 > mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r projects.sql -u root test projects -p

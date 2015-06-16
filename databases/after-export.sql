@@ -1,2 +1,3 @@
---删除之前创建的表格 identities
+--删除之前创建的表格 
 DROP TABLE identities;
+DROP TABLE members;
