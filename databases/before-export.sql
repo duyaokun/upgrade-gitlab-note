@@ -47,3 +47,7 @@ ALTER TABLE `snippets` CHANGE `private` `visibility_level` INTEGER DEFAULT 0 NOT
 UPDATE snippets SET visibility_level=2 WHERE visibility_level=0;
 UPDATE snippets SET visibility_level=0 WHERE visibility_level=1;
 UPDATE snippets SET visibility_level=1 WHERE visibility_level=2;
+
+--tags 表格迁移
+ALTER TABLE `tags` ADD `taggings_count` INTEGER DEFAULT 0 NOT NULL;
+UPDATE tags SET taggings_count=(SELECT COUNT(1) FROM taggings WHERE taggings.tag_id=tags.id);

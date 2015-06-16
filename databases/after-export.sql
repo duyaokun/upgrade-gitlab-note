@@ -16,3 +16,5 @@ UPDATE snippets SET visibility_level=2 WHERE visibility_level=0;
 UPDATE snippets SET visibility_level=0 WHERE visibility_level=1;
 UPDATE snippets SET visibility_level=1 WHERE visibility_level=2;
 ALTER TABLE `snippets` CHANGE `visibility_level` `private` TINYINT(1) DEFAULT 1 NOT NULL;
+
+ALTER TABLE `tags` DROP COLUMN `taggings_count`;

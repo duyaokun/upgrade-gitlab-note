@@ -108,8 +108,3 @@ s | merge_requests_events | tag_push_events | note_events
 ```
 
 $ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/services.psql
-
-### tags
-$ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r tags.sql -u bitnami bitnami_gitlab tags -p
-$ python db_converter.py tags.sql tags.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/tags.psql
