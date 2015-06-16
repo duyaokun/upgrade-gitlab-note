@@ -13,22 +13,21 @@ if [ "$action" == "import" ]; then
   done
   
 else
-  echo "Start export database from MySQL"
   mysql_password="6645a79e86"
 
-  # backup
+  echo "backup"
   /opt/gitlab-6.9.2-1/mysql/bin/mysqldump -u bitnami -p${mysql_password} bitnami_gitlab > ../bitnami_gitlab.sql
 
-  # prepared for export
+  echo "prepared for export"
   /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < ${sql_folder}before-export.sql
 
-  # export
+  echo "Start export database from MySQL"
   for table in ${tables[@]}
   do
     ./export.sh ${table} ${mysql_password}
   done
 
-  # revert SQL changed
+  echo "revert SQL changed"
   /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < ${sql_folder}after-export.sql
 
   echo "start tar mysql files"
