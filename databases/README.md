@@ -1,6 +1,7 @@
-﻿# GitLab 7.2.0 bitnami to GitLab 7.11.4 Omnibus
+﻿# GitLab 7.1.0 bitnami to GitLab 7.11.4 Omnibus
 
 ## Mysql To PostgreSQL
+[7.1 旧数据库结构](gitlab.7.1.sql)
 [7.11 原始数据库](gitlab.7.11.psql)
 
 数据库差异如下:
