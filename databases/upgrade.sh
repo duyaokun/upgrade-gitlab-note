@@ -1,5 +1,5 @@
 #!/bin/bash
-tables=("events" "forked_project_links" "keys" "issues" "merge_request_diffs" "merge_requests" "milestones" "namespaces" "protected_branches" "taggings")
+tables=("events" "forked_project_links" "issues" "identities" "keys" "members" "merge_request_diffs" "merge_requests" "milestones" "namespaces" "notes" "projects" "protected_branches" "snippets" "taggings" "tags" "users")
 action=$1
 
 if [ "$action" == "import" ]; then
