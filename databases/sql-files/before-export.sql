@@ -56,6 +56,10 @@ UPDATE tags SET taggings_count=(SELECT COUNT(1) FROM taggings WHERE taggings.tag
 ALTER TABLE `users` ADD `notification_email` character varying(255);
 ALTER TABLE `users` ADD `public_email` character varying(255);
 UPDATE users SET public_email=email, notification_email=email;
+ALTER TABLE `users` CHANGE `admin` `admin` CHAR(1) NOT NULL DEFAULT '0';
+ALTER TABLE `users` CHANGE `can_create_group` `can_create_group` CHAR(1) NOT NULL DEFAULT '1';
+ALTER TABLE `users` CHANGE `can_create_team` `can_create_team` CHAR(1) NOT NULL DEFAULT '1';
+ALTER TABLE `users` CHANGE `hide_no_ssh_key` `hide_no_ssh_key` CHAR(1) NOT NULL DEFAULT '0';
 -- 注意: 必须迁移 identities 才可以执行下面这个操作
 -- ALTER TABLE `users` DROP COLUMN `extern_uid`;
 -- ALTER TABLE `users` DROP COLUMN `provider`;

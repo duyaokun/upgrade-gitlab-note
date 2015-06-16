@@ -3,6 +3,10 @@
 -- UPDATE users SET extern_uid=i.extern_uid provider=i.provider;
 ALTER TABLE `users` DROP COLUMN `public_email`;
 ALTER TABLE `users` DROP COLUMN `notification_email`;
+ALTER TABLE `users` CHANGE `admin` `admin` tinyint(1) NOT NULL DEFAULT '0';
+ALTER TABLE `users` CHANGE `can_create_group` `can_create_group` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `users` CHANGE `can_create_team` `can_create_team` tinyint(1) NOT NULL DEFAULT '1';
+ALTER TABLE `users` CHANGE `hide_no_ssh_key` `hide_no_ssh_key` tinyint(1) NOT NULL DEFAULT '0';
 
 -- 删除之前创建的表格 
 DROP TABLE identities;
