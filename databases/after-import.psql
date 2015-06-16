@@ -4,3 +4,4 @@ SELECT setval('members_id_seq', max(id)) FROM members;
 SELECT setval('merge_requests_id_seq', max(id)) FROM merge_requests;
 SELECT setval('notes_id_seq', max(id)) FROM notes;
 SELECT setval('projects_id_seq', max(id)) FROM projects;
+SELECT setval('protected_branches_id_seq', max(id)) FROM protected_branches;

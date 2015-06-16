@@ -1,5 +1,5 @@
 #!/bin/bash
-same_tables=("events" "forked_project_links" "keys" "issues" "merge_request_diffs" "merge_requests" "milestones" "namespaces" "taggings")
+same_tables=("events" "forked_project_links" "keys" "issues" "merge_request_diffs" "merge_requests" "milestones" "namespaces" "protected_branches" "taggings")
 action=$1
 echo ${action}
 

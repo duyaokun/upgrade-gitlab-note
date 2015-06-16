@@ -66,11 +66,6 @@ otp_secret | encrypted_otp_secret_iv | encrypted_otp_secret_salt | otp_required_
 (1 row)
 ```
 
-### protected_branches
-$ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r protected_branches.sql -u bitnami bitnami_gitlab protected_branches -p
-$ python db_converter.py protected_branches.sql protected_branches.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/protected_branches.psql
-
 ### services
 $ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r services.sql -u bitnami bitnami_gitlab services -p
 > ALTER TABLE `services` DROP `token`, DROP `project_url`, DROP `subdomain`, DROP `room`, DROP `recipients`, DROP `api_key`;
