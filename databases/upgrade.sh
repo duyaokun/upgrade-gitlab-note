@@ -4,14 +4,22 @@ action=$1
 sql_folder="sql-files/"
 
 if [ "$action" == "import" ]; then
+  psql_user="gitlab"
+  psql_path="/opt/gitlab/embedded/bin/"
+
+  echo "prepared for import"
+  sudo -u ${psql_user} ${psql_path}psql -d gitlabhq_production -f ${sql_folder}before-import.psql
+
   echo "Start import database to PostgreSQL"
-  
   for table in ${tables[@]}
   do
     echo "Start import table ${table}"
-    ./import.sh ${table}
+    sudo -u ${psql_user} ${psql_path}psql -d gitlabhq_production -f psql/${table}.psql
   done
-  
+
+  echo "update index"
+  sudo -u ${psql_user} ${psql_path}psql -d gitlabhq_production -f ${sql_folder}after-import.psql
+
 else
   mysql_password="6645a79e86"
 

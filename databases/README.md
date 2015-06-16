@@ -36,9 +36,7 @@
 
 	> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r users.sql -u root test users -p
 3. 将转换好的 psql 数据库上传至新服务器
-4. 在新服务数据中执行 SQL 脚本 `sql-files/before-import.psql`
-5. 在新服务器运行脚本`./upgrade-same-schema-tables.sh import`
-6. 在新服务数据中执行 SQL 脚本 `sql-files/after-import.psql`
+4. 在新服务器运行脚本`./upgrade-same-schema-tables.sh import`
 
 ## 导入其他有变化的数据表格
 
