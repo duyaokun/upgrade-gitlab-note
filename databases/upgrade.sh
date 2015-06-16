@@ -1,12 +1,12 @@
 #!/bin/bash
-same_tables=("events" "forked_project_links" "keys" "issues" "merge_request_diffs" "merge_requests" "milestones" "namespaces" "protected_branches" "taggings")
+tables=("events" "forked_project_links" "keys" "issues" "merge_request_diffs" "merge_requests" "milestones" "namespaces" "protected_branches" "taggings")
 action=$1
 echo ${action}
 
 if [ "$action" == "import" ]; then
   echo "Start import database to PostgreSQL"
   
-  for table in ${same_tables[@]}
+  for table in ${tables[@]}
   do
     echo "Start import table ${table}"
     ../import.sh ${table}
@@ -15,7 +15,7 @@ if [ "$action" == "import" ]; then
 else
   echo "Start export database from MySQL"
 
-  for table in ${same_tables[@]}
+  for table in ${tables[@]}
   do
     ../export.sh ${table}
   done
