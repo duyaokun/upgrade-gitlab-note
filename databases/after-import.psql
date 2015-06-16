@@ -1,1 +1,2 @@
 SELECT setval('identities_id_seq', max(id)) FROM identities;
+SELECT setval('keys_id_seq', max(id)) FROM keys;

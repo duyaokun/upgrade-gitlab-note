@@ -66,11 +66,6 @@ otp_secret | encrypted_otp_secret_iv | encrypted_otp_secret_salt | otp_required_
 (1 row)
 ```
 
-### keys
-$ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r keys.sql -u bitnami bitnami_gitlab keys -p
-$ python db_converter.py keys.sql keys.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/keys.psql
-
 ### members
 > CREATE TABLE members (
     id integer KEY NOT NULL AUTO_INCREMENT,
