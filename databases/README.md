@@ -66,12 +66,6 @@ otp_secret | encrypted_otp_secret_iv | encrypted_otp_secret_salt | otp_required_
 (1 row)
 ```
 
-### identities
-> INSERT INTO identities (extern_uid, provider, user_id, created_at, updated_at) SELECT extern_uid, provider, id, created_at, updated_at FROM users;
-> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r identities.sql -u root test identities -p
-$ python db_converter.py identities.sql identities.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/identities.psql
-
 ### keys
 $ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r keys.sql -u bitnami bitnami_gitlab keys -p
 $ python db_converter.py keys.sql keys.psql
