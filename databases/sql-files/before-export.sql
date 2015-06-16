@@ -1,6 +1,6 @@
 -- identities 表格迁移
 CREATE TABLE identities (
-    id integer NOT NULL,
+    id integer NOT NULL KEY AUTO_INCREMENT,
     extern_uid character varying(255),
     provider character varying(255),
     user_id integer,
