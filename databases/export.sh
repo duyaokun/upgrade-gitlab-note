@@ -1,5 +1,5 @@
 #!/bin/bash
-mysql_password="6645a79e86"
+mysql_password=$2
 table=$1
 
 #导出 MySQL表格
