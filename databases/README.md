@@ -140,8 +140,3 @@ $ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=pos
 $ ALTER TABLE `notes` CHANGE `system` `system` TINYINT(1) NOT NULL DEFAULT '0';
 $ python db_converter.py notes.sql notes.psql
 $ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/notes.psql
-
-## merge_requests
-$ ./mysqldump --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r merge_requests.sql -u bitnami bitnami_gitlab merge_requests -p
-$ python db_converter.py merge_requests.sql merge_requests.psql
-$ sudo -u gitlab ./psql -d gitlabhq_production -f /home/gitlab/gitignore/mysql/merge_requests.psql
