@@ -1,0 +1,3143 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: application_settings; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE application_settings (
+    id integer NOT NULL,
+    default_projects_limit integer,
+    signup_enabled boolean,
+    signin_enabled boolean,
+    gravatar_enabled boolean,
+    sign_in_text text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    home_page_url character varying(255),
+    default_branch_protection integer DEFAULT 2,
+    twitter_sharing_enabled boolean DEFAULT true,
+    restricted_visibility_levels text,
+    version_check_enabled boolean DEFAULT true,
+    max_attachment_size integer DEFAULT 10 NOT NULL,
+    default_project_visibility integer,
+    default_snippet_visibility integer,
+    restricted_signup_domains text
+);
+
+
+ALTER TABLE public.application_settings OWNER TO gitlab;
+
+--
+-- Name: application_settings_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE application_settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.application_settings_id_seq OWNER TO gitlab;
+
+--
+-- Name: application_settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE application_settings_id_seq OWNED BY application_settings.id;
+
+
+--
+-- Name: broadcast_messages; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE broadcast_messages (
+    id integer NOT NULL,
+    message text NOT NULL,
+    starts_at timestamp without time zone,
+    ends_at timestamp without time zone,
+    alert_type integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    color character varying(255),
+    font character varying(255)
+);
+
+
+ALTER TABLE public.broadcast_messages OWNER TO gitlab;
+
+--
+-- Name: broadcast_messages_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE broadcast_messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.broadcast_messages_id_seq OWNER TO gitlab;
+
+--
+-- Name: broadcast_messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE broadcast_messages_id_seq OWNED BY broadcast_messages.id;
+
+
+--
+-- Name: deploy_keys_projects; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE deploy_keys_projects (
+    id integer NOT NULL,
+    deploy_key_id integer NOT NULL,
+    project_id integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.deploy_keys_projects OWNER TO gitlab;
+
+--
+-- Name: deploy_keys_projects_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE deploy_keys_projects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.deploy_keys_projects_id_seq OWNER TO gitlab;
+
+--
+-- Name: deploy_keys_projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE deploy_keys_projects_id_seq OWNED BY deploy_keys_projects.id;
+
+
+--
+-- Name: emails; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE emails (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    email character varying(255) NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.emails OWNER TO gitlab;
+
+--
+-- Name: emails_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE emails_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.emails_id_seq OWNER TO gitlab;
+
+--
+-- Name: emails_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE emails_id_seq OWNED BY emails.id;
+
+
+--
+-- Name: events; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE events (
+    id integer NOT NULL,
+    target_type character varying(255),
+    target_id integer,
+    title character varying(255),
+    data text,
+    project_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    action integer,
+    author_id integer
+);
+
+
+ALTER TABLE public.events OWNER TO gitlab;
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.events_id_seq OWNER TO gitlab;
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE events_id_seq OWNED BY events.id;
+
+
+--
+-- Name: forked_project_links; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE forked_project_links (
+    id integer NOT NULL,
+    forked_to_project_id integer NOT NULL,
+    forked_from_project_id integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.forked_project_links OWNER TO gitlab;
+
+--
+-- Name: forked_project_links_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE forked_project_links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.forked_project_links_id_seq OWNER TO gitlab;
+
+--
+-- Name: forked_project_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE forked_project_links_id_seq OWNED BY forked_project_links.id;
+
+
+--
+-- Name: identities; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE identities (
+    id integer NOT NULL,
+    extern_uid character varying(255),
+    provider character varying(255),
+    user_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.identities OWNER TO gitlab;
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.identities_id_seq OWNER TO gitlab;
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE identities_id_seq OWNED BY identities.id;
+
+
+--
+-- Name: issues; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE issues (
+    id integer NOT NULL,
+    title character varying(255),
+    assignee_id integer,
+    author_id integer,
+    project_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    "position" integer DEFAULT 0,
+    branch_name character varying(255),
+    description text,
+    milestone_id integer,
+    state character varying(255),
+    iid integer
+);
+
+
+ALTER TABLE public.issues OWNER TO gitlab;
+
+--
+-- Name: issues_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE issues_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.issues_id_seq OWNER TO gitlab;
+
+--
+-- Name: issues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE issues_id_seq OWNED BY issues.id;
+
+
+--
+-- Name: keys; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE keys (
+    id integer NOT NULL,
+    user_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    key text,
+    title character varying(255),
+    type character varying(255),
+    fingerprint character varying(255),
+    public boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.keys OWNER TO gitlab;
+
+--
+-- Name: keys_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE keys_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.keys_id_seq OWNER TO gitlab;
+
+--
+-- Name: keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE keys_id_seq OWNED BY keys.id;
+
+
+--
+-- Name: label_links; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE label_links (
+    id integer NOT NULL,
+    label_id integer,
+    target_id integer,
+    target_type character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.label_links OWNER TO gitlab;
+
+--
+-- Name: label_links_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE label_links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.label_links_id_seq OWNER TO gitlab;
+
+--
+-- Name: label_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE label_links_id_seq OWNED BY label_links.id;
+
+
+--
+-- Name: labels; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE labels (
+    id integer NOT NULL,
+    title character varying(255),
+    color character varying(255),
+    project_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.labels OWNER TO gitlab;
+
+--
+-- Name: labels_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE labels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.labels_id_seq OWNER TO gitlab;
+
+--
+-- Name: labels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE labels_id_seq OWNED BY labels.id;
+
+
+--
+-- Name: members; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE members (
+    id integer NOT NULL,
+    access_level integer NOT NULL,
+    source_id integer NOT NULL,
+    source_type character varying(255) NOT NULL,
+    user_id integer,
+    notification_level integer NOT NULL,
+    type character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    created_by_id integer,
+    invite_email character varying(255),
+    invite_token character varying(255),
+    invite_accepted_at timestamp without time zone
+);
+
+
+ALTER TABLE public.members OWNER TO gitlab;
+
+--
+-- Name: members_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE members_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.members_id_seq OWNER TO gitlab;
+
+--
+-- Name: members_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE members_id_seq OWNED BY members.id;
+
+
+--
+-- Name: merge_request_diffs; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE merge_request_diffs (
+    id integer NOT NULL,
+    state character varying(255),
+    st_commits text,
+    st_diffs text,
+    merge_request_id integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.merge_request_diffs OWNER TO gitlab;
+
+--
+-- Name: merge_request_diffs_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE merge_request_diffs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.merge_request_diffs_id_seq OWNER TO gitlab;
+
+--
+-- Name: merge_request_diffs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE merge_request_diffs_id_seq OWNED BY merge_request_diffs.id;
+
+
+--
+-- Name: merge_requests; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE merge_requests (
+    id integer NOT NULL,
+    target_branch character varying(255) NOT NULL,
+    source_branch character varying(255) NOT NULL,
+    source_project_id integer NOT NULL,
+    author_id integer,
+    assignee_id integer,
+    title character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    milestone_id integer,
+    state character varying(255),
+    merge_status character varying(255),
+    target_project_id integer NOT NULL,
+    iid integer,
+    description text,
+    "position" integer DEFAULT 0,
+    locked_at timestamp without time zone
+);
+
+
+ALTER TABLE public.merge_requests OWNER TO gitlab;
+
+--
+-- Name: merge_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE merge_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.merge_requests_id_seq OWNER TO gitlab;
+
+--
+-- Name: merge_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE merge_requests_id_seq OWNED BY merge_requests.id;
+
+
+--
+-- Name: milestones; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE milestones (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    project_id integer NOT NULL,
+    description text,
+    due_date date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    state character varying(255),
+    iid integer
+);
+
+
+ALTER TABLE public.milestones OWNER TO gitlab;
+
+--
+-- Name: milestones_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE milestones_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.milestones_id_seq OWNER TO gitlab;
+
+--
+-- Name: milestones_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE milestones_id_seq OWNED BY milestones.id;
+
+
+--
+-- Name: namespaces; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE namespaces (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    path character varying(255) NOT NULL,
+    owner_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    type character varying(255),
+    description character varying(255) DEFAULT ''::character varying NOT NULL,
+    avatar character varying(255)
+);
+
+
+ALTER TABLE public.namespaces OWNER TO gitlab;
+
+--
+-- Name: namespaces_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE namespaces_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.namespaces_id_seq OWNER TO gitlab;
+
+--
+-- Name: namespaces_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE namespaces_id_seq OWNED BY namespaces.id;
+
+
+--
+-- Name: notes; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE notes (
+    id integer NOT NULL,
+    note text,
+    noteable_type character varying(255),
+    author_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    project_id integer,
+    attachment character varying(255),
+    line_code character varying(255),
+    commit_id character varying(255),
+    noteable_id integer,
+    system boolean DEFAULT false NOT NULL,
+    st_diff text
+);
+
+
+ALTER TABLE public.notes OWNER TO gitlab;
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.notes_id_seq OWNER TO gitlab;
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE notes_id_seq OWNED BY notes.id;
+
+
+--
+-- Name: oauth_access_grants; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE oauth_access_grants (
+    id integer NOT NULL,
+    resource_owner_id integer NOT NULL,
+    application_id integer NOT NULL,
+    token character varying(255) NOT NULL,
+    expires_in integer NOT NULL,
+    redirect_uri text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    revoked_at timestamp without time zone,
+    scopes character varying(255)
+);
+
+
+ALTER TABLE public.oauth_access_grants OWNER TO gitlab;
+
+--
+-- Name: oauth_access_grants_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE oauth_access_grants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.oauth_access_grants_id_seq OWNER TO gitlab;
+
+--
+-- Name: oauth_access_grants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE oauth_access_grants_id_seq OWNED BY oauth_access_grants.id;
+
+
+--
+-- Name: oauth_access_tokens; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE oauth_access_tokens (
+    id integer NOT NULL,
+    resource_owner_id integer,
+    application_id integer,
+    token character varying(255) NOT NULL,
+    refresh_token character varying(255),
+    expires_in integer,
+    revoked_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    scopes character varying(255)
+);
+
+
+ALTER TABLE public.oauth_access_tokens OWNER TO gitlab;
+
+--
+-- Name: oauth_access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE oauth_access_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.oauth_access_tokens_id_seq OWNER TO gitlab;
+
+--
+-- Name: oauth_access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE oauth_access_tokens_id_seq OWNED BY oauth_access_tokens.id;
+
+
+--
+-- Name: oauth_applications; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE oauth_applications (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    uid character varying(255) NOT NULL,
+    secret character varying(255) NOT NULL,
+    redirect_uri text NOT NULL,
+    scopes character varying(255) DEFAULT ''::character varying NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    owner_id integer,
+    owner_type character varying(255)
+);
+
+
+ALTER TABLE public.oauth_applications OWNER TO gitlab;
+
+--
+-- Name: oauth_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE oauth_applications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.oauth_applications_id_seq OWNER TO gitlab;
+
+--
+-- Name: oauth_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE oauth_applications_id_seq OWNED BY oauth_applications.id;
+
+
+--
+-- Name: project_import_data; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE project_import_data (
+    id integer NOT NULL,
+    project_id integer,
+    data text
+);
+
+
+ALTER TABLE public.project_import_data OWNER TO gitlab;
+
+--
+-- Name: project_import_data_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE project_import_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.project_import_data_id_seq OWNER TO gitlab;
+
+--
+-- Name: project_import_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE project_import_data_id_seq OWNED BY project_import_data.id;
+
+
+--
+-- Name: projects; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE projects (
+    id integer NOT NULL,
+    name character varying(255),
+    path character varying(255),
+    description text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    creator_id integer,
+    issues_enabled boolean DEFAULT true NOT NULL,
+    wall_enabled boolean DEFAULT true NOT NULL,
+    merge_requests_enabled boolean DEFAULT true NOT NULL,
+    wiki_enabled boolean DEFAULT true NOT NULL,
+    namespace_id integer,
+    issues_tracker character varying(255) DEFAULT 'gitlab'::character varying NOT NULL,
+    issues_tracker_id character varying(255),
+    snippets_enabled boolean DEFAULT true NOT NULL,
+    last_activity_at timestamp without time zone,
+    import_url character varying(255),
+    visibility_level integer DEFAULT 0 NOT NULL,
+    archived boolean DEFAULT false NOT NULL,
+    avatar character varying(255),
+    import_status character varying(255),
+    repository_size double precision DEFAULT 0.0,
+    star_count integer DEFAULT 0 NOT NULL,
+    import_type character varying(255),
+    import_source character varying(255)
+);
+
+
+ALTER TABLE public.projects OWNER TO gitlab;
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE projects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.projects_id_seq OWNER TO gitlab;
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+
+
+--
+-- Name: protected_branches; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE protected_branches (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    developers_can_push boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.protected_branches OWNER TO gitlab;
+
+--
+-- Name: protected_branches_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE protected_branches_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.protected_branches_id_seq OWNER TO gitlab;
+
+--
+-- Name: protected_branches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE protected_branches_id_seq OWNED BY protected_branches.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO gitlab;
+
+--
+-- Name: services; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE services (
+    id integer NOT NULL,
+    type character varying(255),
+    title character varying(255),
+    project_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    active boolean DEFAULT false NOT NULL,
+    properties text,
+    template boolean DEFAULT false,
+    push_events boolean DEFAULT true,
+    issues_events boolean DEFAULT true,
+    merge_requests_events boolean DEFAULT true,
+    tag_push_events boolean DEFAULT true,
+    note_events boolean DEFAULT true NOT NULL
+);
+
+
+ALTER TABLE public.services OWNER TO gitlab;
+
+--
+-- Name: services_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE services_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.services_id_seq OWNER TO gitlab;
+
+--
+-- Name: services_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE services_id_seq OWNED BY services.id;
+
+
+--
+-- Name: snippets; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE snippets (
+    id integer NOT NULL,
+    title character varying(255),
+    content text,
+    author_id integer NOT NULL,
+    project_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    file_name character varying(255),
+    expires_at timestamp without time zone,
+    type character varying(255),
+    visibility_level integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.snippets OWNER TO gitlab;
+
+--
+-- Name: snippets_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE snippets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.snippets_id_seq OWNER TO gitlab;
+
+--
+-- Name: snippets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE snippets_id_seq OWNED BY snippets.id;
+
+
+--
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE subscriptions (
+    id integer NOT NULL,
+    user_id integer,
+    subscribable_id integer,
+    subscribable_type character varying(255),
+    subscribed boolean,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.subscriptions OWNER TO gitlab;
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.subscriptions_id_seq OWNER TO gitlab;
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
+
+
+--
+-- Name: taggings; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE taggings (
+    id integer NOT NULL,
+    tag_id integer,
+    taggable_id integer,
+    taggable_type character varying(255),
+    tagger_id integer,
+    tagger_type character varying(255),
+    context character varying(255),
+    created_at timestamp without time zone
+);
+
+
+ALTER TABLE public.taggings OWNER TO gitlab;
+
+--
+-- Name: taggings_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE taggings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.taggings_id_seq OWNER TO gitlab;
+
+--
+-- Name: taggings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE taggings_id_seq OWNED BY taggings.id;
+
+
+--
+-- Name: tags; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE tags (
+    id integer NOT NULL,
+    name character varying(255),
+    taggings_count integer DEFAULT 0
+);
+
+
+ALTER TABLE public.tags OWNER TO gitlab;
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tags_id_seq OWNER TO gitlab;
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    email character varying(255) DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying(255) DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying(255),
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip character varying(255),
+    last_sign_in_ip character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    name character varying(255),
+    admin boolean DEFAULT false NOT NULL,
+    projects_limit integer DEFAULT 10,
+    skype character varying(255) DEFAULT ''::character varying NOT NULL,
+    linkedin character varying(255) DEFAULT ''::character varying NOT NULL,
+    twitter character varying(255) DEFAULT ''::character varying NOT NULL,
+    authentication_token character varying(255),
+    theme_id integer DEFAULT 1 NOT NULL,
+    bio character varying(255),
+    failed_attempts integer DEFAULT 0,
+    locked_at timestamp without time zone,
+    username character varying(255),
+    can_create_group boolean DEFAULT true NOT NULL,
+    can_create_team boolean DEFAULT true NOT NULL,
+    state character varying(255),
+    color_scheme_id integer DEFAULT 1 NOT NULL,
+    notification_level integer DEFAULT 1 NOT NULL,
+    password_expires_at timestamp without time zone,
+    created_by_id integer,
+    last_credential_check_at timestamp without time zone,
+    avatar character varying(255),
+    confirmation_token character varying(255),
+    confirmed_at timestamp without time zone,
+    confirmation_sent_at timestamp without time zone,
+    unconfirmed_email character varying(255),
+    hide_no_ssh_key boolean DEFAULT false,
+    website_url character varying(255) DEFAULT ''::character varying NOT NULL,
+    github_access_token character varying(255),
+    gitlab_access_token character varying(255),
+    notification_email character varying(255),
+    hide_no_password boolean DEFAULT false,
+    password_automatically_set boolean DEFAULT false,
+    bitbucket_access_token character varying(255),
+    bitbucket_access_token_secret character varying(255),
+    location character varying(255),
+    public_email character varying(255) DEFAULT ''::character varying NOT NULL,
+    encrypted_otp_secret character varying(255),
+    encrypted_otp_secret_iv character varying(255),
+    encrypted_otp_secret_salt character varying(255),
+    otp_required_for_login boolean,
+    otp_backup_codes text
+);
+
+
+ALTER TABLE public.users OWNER TO gitlab;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO gitlab;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: users_star_projects; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE users_star_projects (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    user_id integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.users_star_projects OWNER TO gitlab;
+
+--
+-- Name: users_star_projects_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE users_star_projects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_star_projects_id_seq OWNER TO gitlab;
+
+--
+-- Name: users_star_projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE users_star_projects_id_seq OWNED BY users_star_projects.id;
+
+
+--
+-- Name: web_hooks; Type: TABLE; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE TABLE web_hooks (
+    id integer NOT NULL,
+    url character varying(255),
+    project_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    type character varying(255) DEFAULT 'ProjectHook'::character varying,
+    service_id integer,
+    push_events boolean DEFAULT true NOT NULL,
+    issues_events boolean DEFAULT false NOT NULL,
+    merge_requests_events boolean DEFAULT false NOT NULL,
+    tag_push_events boolean DEFAULT false
+);
+
+
+ALTER TABLE public.web_hooks OWNER TO gitlab;
+
+--
+-- Name: web_hooks_id_seq; Type: SEQUENCE; Schema: public; Owner: gitlab
+--
+
+CREATE SEQUENCE web_hooks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.web_hooks_id_seq OWNER TO gitlab;
+
+--
+-- Name: web_hooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gitlab
+--
+
+ALTER SEQUENCE web_hooks_id_seq OWNED BY web_hooks.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY application_settings ALTER COLUMN id SET DEFAULT nextval('application_settings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY broadcast_messages ALTER COLUMN id SET DEFAULT nextval('broadcast_messages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY deploy_keys_projects ALTER COLUMN id SET DEFAULT nextval('deploy_keys_projects_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY emails ALTER COLUMN id SET DEFAULT nextval('emails_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY forked_project_links ALTER COLUMN id SET DEFAULT nextval('forked_project_links_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY identities ALTER COLUMN id SET DEFAULT nextval('identities_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY issues ALTER COLUMN id SET DEFAULT nextval('issues_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY keys ALTER COLUMN id SET DEFAULT nextval('keys_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY label_links ALTER COLUMN id SET DEFAULT nextval('label_links_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY labels ALTER COLUMN id SET DEFAULT nextval('labels_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY members ALTER COLUMN id SET DEFAULT nextval('members_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY merge_request_diffs ALTER COLUMN id SET DEFAULT nextval('merge_request_diffs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY merge_requests ALTER COLUMN id SET DEFAULT nextval('merge_requests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY milestones ALTER COLUMN id SET DEFAULT nextval('milestones_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY namespaces ALTER COLUMN id SET DEFAULT nextval('namespaces_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY notes ALTER COLUMN id SET DEFAULT nextval('notes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY oauth_access_grants ALTER COLUMN id SET DEFAULT nextval('oauth_access_grants_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY oauth_access_tokens ALTER COLUMN id SET DEFAULT nextval('oauth_access_tokens_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY oauth_applications ALTER COLUMN id SET DEFAULT nextval('oauth_applications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY project_import_data ALTER COLUMN id SET DEFAULT nextval('project_import_data_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY protected_branches ALTER COLUMN id SET DEFAULT nextval('protected_branches_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY services ALTER COLUMN id SET DEFAULT nextval('services_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY snippets ALTER COLUMN id SET DEFAULT nextval('snippets_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY subscriptions ALTER COLUMN id SET DEFAULT nextval('subscriptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY users_star_projects ALTER COLUMN id SET DEFAULT nextval('users_star_projects_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gitlab
+--
+
+ALTER TABLE ONLY web_hooks ALTER COLUMN id SET DEFAULT nextval('web_hooks_id_seq'::regclass);
+
+
+--
+-- Data for Name: application_settings; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY application_settings (id, default_projects_limit, signup_enabled, signin_enabled, gravatar_enabled, sign_in_text, created_at, updated_at, home_page_url, default_branch_protection, twitter_sharing_enabled, restricted_visibility_levels, version_check_enabled, max_attachment_size, default_project_visibility, default_snippet_visibility, restricted_signup_domains) FROM stdin;
+1	10	t	t	t	\N	2015-06-12 06:13:02.566215	2015-06-12 06:13:02.566215	\N	2	t	--- []\n	t	10	0	0	--- []\n
+\.
+
+
+--
+-- Name: application_settings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('application_settings_id_seq', 1, true);
+
+
+--
+-- Data for Name: broadcast_messages; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY broadcast_messages (id, message, starts_at, ends_at, alert_type, created_at, updated_at, color, font) FROM stdin;
+\.
+
+
+--
+-- Name: broadcast_messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('broadcast_messages_id_seq', 1, false);
+
+
+--
+-- Data for Name: deploy_keys_projects; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY deploy_keys_projects (id, deploy_key_id, project_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: deploy_keys_projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('deploy_keys_projects_id_seq', 1, false);
+
+
+--
+-- Data for Name: emails; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY emails (id, user_id, email, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: emails_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('emails_id_seq', 1, false);
+
+
+--
+-- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY events (id, target_type, target_id, title, data, project_id, created_at, updated_at, action, author_id) FROM stdin;
+\.
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('events_id_seq', 1, false);
+
+
+--
+-- Data for Name: forked_project_links; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY forked_project_links (id, forked_to_project_id, forked_from_project_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: forked_project_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('forked_project_links_id_seq', 1, false);
+
+
+--
+-- Data for Name: identities; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY identities (id, extern_uid, provider, user_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('identities_id_seq', 1, false);
+
+
+--
+-- Data for Name: issues; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY issues (id, title, assignee_id, author_id, project_id, created_at, updated_at, "position", branch_name, description, milestone_id, state, iid) FROM stdin;
+\.
+
+
+--
+-- Name: issues_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('issues_id_seq', 1, false);
+
+
+--
+-- Data for Name: keys; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY keys (id, user_id, created_at, updated_at, key, title, type, fingerprint, public) FROM stdin;
+\.
+
+
+--
+-- Name: keys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('keys_id_seq', 1, false);
+
+
+--
+-- Data for Name: label_links; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY label_links (id, label_id, target_id, target_type, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: label_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('label_links_id_seq', 1, false);
+
+
+--
+-- Data for Name: labels; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY labels (id, title, color, project_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: labels_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('labels_id_seq', 1, false);
+
+
+--
+-- Data for Name: members; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY members (id, access_level, source_id, source_type, user_id, notification_level, type, created_at, updated_at, created_by_id, invite_email, invite_token, invite_accepted_at) FROM stdin;
+\.
+
+
+--
+-- Name: members_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('members_id_seq', 1, false);
+
+
+--
+-- Data for Name: merge_request_diffs; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY merge_request_diffs (id, state, st_commits, st_diffs, merge_request_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: merge_request_diffs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('merge_request_diffs_id_seq', 1, false);
+
+
+--
+-- Data for Name: merge_requests; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY merge_requests (id, target_branch, source_branch, source_project_id, author_id, assignee_id, title, created_at, updated_at, milestone_id, state, merge_status, target_project_id, iid, description, "position", locked_at) FROM stdin;
+\.
+
+
+--
+-- Name: merge_requests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('merge_requests_id_seq', 1, false);
+
+
+--
+-- Data for Name: milestones; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY milestones (id, title, project_id, description, due_date, created_at, updated_at, state, iid) FROM stdin;
+\.
+
+
+--
+-- Name: milestones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('milestones_id_seq', 1, false);
+
+
+--
+-- Data for Name: namespaces; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY namespaces (id, name, path, owner_id, created_at, updated_at, type, description, avatar) FROM stdin;
+1	root	root	1	2015-06-12 06:13:02.934907	2015-06-12 06:13:02.934907	\N		\N
+\.
+
+
+--
+-- Name: namespaces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('namespaces_id_seq', 1, true);
+
+
+--
+-- Data for Name: notes; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY notes (id, note, noteable_type, author_id, created_at, updated_at, project_id, attachment, line_code, commit_id, noteable_id, system, st_diff) FROM stdin;
+\.
+
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('notes_id_seq', 1, false);
+
+
+--
+-- Data for Name: oauth_access_grants; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY oauth_access_grants (id, resource_owner_id, application_id, token, expires_in, redirect_uri, created_at, revoked_at, scopes) FROM stdin;
+\.
+
+
+--
+-- Name: oauth_access_grants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('oauth_access_grants_id_seq', 1, false);
+
+
+--
+-- Data for Name: oauth_access_tokens; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY oauth_access_tokens (id, resource_owner_id, application_id, token, refresh_token, expires_in, revoked_at, created_at, scopes) FROM stdin;
+\.
+
+
+--
+-- Name: oauth_access_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('oauth_access_tokens_id_seq', 1, false);
+
+
+--
+-- Data for Name: oauth_applications; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY oauth_applications (id, name, uid, secret, redirect_uri, scopes, created_at, updated_at, owner_id, owner_type) FROM stdin;
+\.
+
+
+--
+-- Name: oauth_applications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('oauth_applications_id_seq', 1, false);
+
+
+--
+-- Data for Name: project_import_data; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY project_import_data (id, project_id, data) FROM stdin;
+\.
+
+
+--
+-- Name: project_import_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('project_import_data_id_seq', 1, false);
+
+
+--
+-- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY projects (id, name, path, description, created_at, updated_at, creator_id, issues_enabled, wall_enabled, merge_requests_enabled, wiki_enabled, namespace_id, issues_tracker, issues_tracker_id, snippets_enabled, last_activity_at, import_url, visibility_level, archived, avatar, import_status, repository_size, star_count, import_type, import_source) FROM stdin;
+\.
+
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('projects_id_seq', 1, false);
+
+
+--
+-- Data for Name: protected_branches; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY protected_branches (id, project_id, name, created_at, updated_at, developers_can_push) FROM stdin;
+\.
+
+
+--
+-- Name: protected_branches_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('protected_branches_id_seq', 1, false);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY schema_migrations (version) FROM stdin;
+20150509180749
+20140914145549
+20141216155758
+20130324203535
+20130123114545
+20130506090604
+20130318212250
+20150421120000
+20130621195223
+20131129154016
+20130326142630
+20150423033240
+20150425164650
+20130812143708
+20150413192223
+20150116234545
+20130206084024
+20140312145357
+20131217102743
+20140122114406
+20150411000035
+20130218141038
+20150225065047
+20130410175022
+20150425164646
+20130102143055
+20130506085413
+20131009115346
+20130419190306
+20130220124204
+20140903115954
+20141226080412
+20131214224427
+20130220125545
+20130613165816
+20140502125220
+20140127170938
+20150211172122
+20140625115202
+20150425164647
+20130404164628
+20130324151736
+20150209222013
+20150429002313
+20130821090530
+20150425173433
+20140428105831
+20150417122318
+20150219004514
+20140611135229
+20141223135007
+20150328132231
+20150217123345
+20140914113604
+20130218141117
+20130218141507
+20140304005354
+20140209025651
+20150327122227
+20141121161704
+20150206222854
+20130325173941
+20150502064022
+20130220125544
+20150206181414
+20150320234437
+20150310194358
+20130323174317
+20130324172327
+20140729145339
+20130522141856
+20130611210815
+20131130165425
+20131112114325
+20150108073740
+20150213104043
+20130403003950
+20150301014758
+20150406133311
+20140313092127
+20121220064453
+20140305193308
+20140502115131
+20150213114800
+20140907220153
+20131112220935
+20130304104740
+20150425164648
+20140407135544
+20130207104426
+20140122112253
+20130315124931
+20150211174341
+20130304104623
+20130218141344
+20131202192556
+20141217125223
+20150331183602
+20130909132950
+20130131070232
+20130110172407
+20130218141327
+20130319214458
+20130218141554
+20130624162710
+20131005191208
+20130220133245
+20130304105317
+20150213121042
+20140116231608
+20140415124820
+20150425164649
+20130218141258
+20140122122549
+20150327223628
+20141121133009
+20130614132337
+20150324155957
+20140914173417
+20130617095603
+20150411180045
+20141007100818
+20130218140952
+20131106151520
+20130506095501
+20150313012111
+20140729140420
+20140416185734
+20140214102325
+20150125163100
+20130622115340
+20130528184641
+20150205211843
+20150306023112
+20130926081215
+20130218141536
+20140416074002
+20130214154045
+20130809124851
+20130125090214
+20140414131055
+20150223022001
+20130804151314
+20140729134820
+20140729152420
+20141006143943
+20150417121913
+20130211085435
+20150327150017
+20130218141444
+20130613173246
+20130819182730
+20140125162722
+20141205134006
+20140730111702
+20130821090531
+20150116234544
+20150306023106
+20150425164651
+\.
+
+
+--
+-- Data for Name: services; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY services (id, type, title, project_id, created_at, updated_at, active, properties, template, push_events, issues_events, merge_requests_events, tag_push_events, note_events) FROM stdin;
+\.
+
+
+--
+-- Name: services_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('services_id_seq', 1, false);
+
+
+--
+-- Data for Name: snippets; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY snippets (id, title, content, author_id, project_id, created_at, updated_at, file_name, expires_at, type, visibility_level) FROM stdin;
+\.
+
+
+--
+-- Name: snippets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('snippets_id_seq', 1, false);
+
+
+--
+-- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY subscriptions (id, user_id, subscribable_id, subscribable_type, subscribed, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('subscriptions_id_seq', 1, false);
+
+
+--
+-- Data for Name: taggings; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY taggings (id, tag_id, taggable_id, taggable_type, tagger_id, tagger_type, context, created_at) FROM stdin;
+\.
+
+
+--
+-- Name: taggings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('taggings_id_seq', 1, false);
+
+
+--
+-- Data for Name: tags; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY tags (id, name, taggings_count) FROM stdin;
+\.
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('tags_id_seq', 1, false);
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at, name, admin, projects_limit, skype, linkedin, twitter, authentication_token, theme_id, bio, failed_attempts, locked_at, username, can_create_group, can_create_team, state, color_scheme_id, notification_level, password_expires_at, created_by_id, last_credential_check_at, avatar, confirmation_token, confirmed_at, confirmation_sent_at, unconfirmed_email, hide_no_ssh_key, website_url, github_access_token, gitlab_access_token, notification_email, hide_no_password, password_automatically_set, bitbucket_access_token, bitbucket_access_token_secret, location, public_email, encrypted_otp_secret, encrypted_otp_secret_iv, encrypted_otp_secret_salt, otp_required_for_login, otp_backup_codes) FROM stdin;
+1	admin@example.com	$2a$10$/gaeS1iCqhnnjOzfDi/ywOgQ2EZTTpRKdb1KRrOwDERGwZKxeAtAC	\N	\N	\N	0	\N	\N	\N	\N	2015-06-12 06:13:02.661432	2015-06-12 06:13:02.943875	Administrator	t	10000				ttASR1-f_mvSFyxZbtz5	2	\N	0	\N	root	t	f	active	1	1	2015-06-12 06:13:02.446081	\N	\N	\N	\N	2015-06-12 06:13:02.943674	2015-06-12 06:13:02.834235	\N	f		\N	\N	admin@example.com	f	f	\N	\N	\N		\N	\N	\N	\N	null
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('users_id_seq', 1, true);
+
+
+--
+-- Data for Name: users_star_projects; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY users_star_projects (id, project_id, user_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: users_star_projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('users_star_projects_id_seq', 1, false);
+
+
+--
+-- Data for Name: web_hooks; Type: TABLE DATA; Schema: public; Owner: gitlab
+--
+
+COPY web_hooks (id, url, project_id, created_at, updated_at, type, service_id, push_events, issues_events, merge_requests_events, tag_push_events) FROM stdin;
+\.
+
+
+--
+-- Name: web_hooks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitlab
+--
+
+SELECT pg_catalog.setval('web_hooks_id_seq', 1, false);
+
+
+--
+-- Name: application_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY application_settings
+    ADD CONSTRAINT application_settings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: broadcast_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY broadcast_messages
+    ADD CONSTRAINT broadcast_messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: deploy_keys_projects_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY deploy_keys_projects
+    ADD CONSTRAINT deploy_keys_projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: emails_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY emails
+    ADD CONSTRAINT emails_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: forked_project_links_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY forked_project_links
+    ADD CONSTRAINT forked_project_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: identities_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY identities
+    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: issues_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY issues
+    ADD CONSTRAINT issues_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: keys_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY keys
+    ADD CONSTRAINT keys_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: label_links_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY label_links
+    ADD CONSTRAINT label_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: labels_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY labels
+    ADD CONSTRAINT labels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: members_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY members
+    ADD CONSTRAINT members_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: merge_request_diffs_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY merge_request_diffs
+    ADD CONSTRAINT merge_request_diffs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: merge_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY merge_requests
+    ADD CONSTRAINT merge_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: milestones_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY milestones
+    ADD CONSTRAINT milestones_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: namespaces_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY namespaces
+    ADD CONSTRAINT namespaces_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notes_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY notes
+    ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth_access_grants_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_access_grants
+    ADD CONSTRAINT oauth_access_grants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth_access_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_access_tokens
+    ADD CONSTRAINT oauth_access_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_applications
+    ADD CONSTRAINT oauth_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_import_data_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY project_import_data
+    ADD CONSTRAINT project_import_data_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: protected_branches_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY protected_branches
+    ADD CONSTRAINT protected_branches_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: services_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY services
+    ADD CONSTRAINT services_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: snippets_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY snippets
+    ADD CONSTRAINT snippets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY taggings
+    ADD CONSTRAINT taggings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tags_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY tags
+    ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_star_projects_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY users_star_projects
+    ADD CONSTRAINT users_star_projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: web_hooks_pkey; Type: CONSTRAINT; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+ALTER TABLE ONLY web_hooks
+    ADD CONSTRAINT web_hooks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_deploy_keys_projects_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_deploy_keys_projects_on_project_id ON deploy_keys_projects USING btree (project_id);
+
+
+--
+-- Name: index_emails_on_email; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_emails_on_email ON emails USING btree (email);
+
+
+--
+-- Name: index_emails_on_user_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_emails_on_user_id ON emails USING btree (user_id);
+
+
+--
+-- Name: index_events_on_action; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_events_on_action ON events USING btree (action);
+
+
+--
+-- Name: index_events_on_author_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_events_on_author_id ON events USING btree (author_id);
+
+
+--
+-- Name: index_events_on_created_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_events_on_created_at ON events USING btree (created_at);
+
+
+--
+-- Name: index_events_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_events_on_project_id ON events USING btree (project_id);
+
+
+--
+-- Name: index_events_on_target_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_events_on_target_id ON events USING btree (target_id);
+
+
+--
+-- Name: index_events_on_target_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_events_on_target_type ON events USING btree (target_type);
+
+
+--
+-- Name: index_forked_project_links_on_forked_to_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_forked_project_links_on_forked_to_project_id ON forked_project_links USING btree (forked_to_project_id);
+
+
+--
+-- Name: index_identities_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_identities_on_created_at_and_id ON identities USING btree (created_at, id);
+
+
+--
+-- Name: index_identities_on_user_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_identities_on_user_id ON identities USING btree (user_id);
+
+
+--
+-- Name: index_issues_on_assignee_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_issues_on_assignee_id ON issues USING btree (assignee_id);
+
+
+--
+-- Name: index_issues_on_author_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_issues_on_author_id ON issues USING btree (author_id);
+
+
+--
+-- Name: index_issues_on_created_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_issues_on_created_at ON issues USING btree (created_at);
+
+
+--
+-- Name: index_issues_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_issues_on_created_at_and_id ON issues USING btree (created_at, id);
+
+
+--
+-- Name: index_issues_on_milestone_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_issues_on_milestone_id ON issues USING btree (milestone_id);
+
+
+--
+-- Name: index_issues_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_issues_on_project_id ON issues USING btree (project_id);
+
+
+--
+-- Name: index_issues_on_project_id_and_iid; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_issues_on_project_id_and_iid ON issues USING btree (project_id, iid);
+
+
+--
+-- Name: index_issues_on_title; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_issues_on_title ON issues USING btree (title);
+
+
+--
+-- Name: index_keys_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_keys_on_created_at_and_id ON keys USING btree (created_at, id);
+
+
+--
+-- Name: index_keys_on_user_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_keys_on_user_id ON keys USING btree (user_id);
+
+
+--
+-- Name: index_label_links_on_label_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_label_links_on_label_id ON label_links USING btree (label_id);
+
+
+--
+-- Name: index_label_links_on_target_id_and_target_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_label_links_on_target_id_and_target_type ON label_links USING btree (target_id, target_type);
+
+
+--
+-- Name: index_labels_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_labels_on_project_id ON labels USING btree (project_id);
+
+
+--
+-- Name: index_members_on_access_level; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_members_on_access_level ON members USING btree (access_level);
+
+
+--
+-- Name: index_members_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_members_on_created_at_and_id ON members USING btree (created_at, id);
+
+
+--
+-- Name: index_members_on_invite_token; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_members_on_invite_token ON members USING btree (invite_token);
+
+
+--
+-- Name: index_members_on_source_id_and_source_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_members_on_source_id_and_source_type ON members USING btree (source_id, source_type);
+
+
+--
+-- Name: index_members_on_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_members_on_type ON members USING btree (type);
+
+
+--
+-- Name: index_members_on_user_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_members_on_user_id ON members USING btree (user_id);
+
+
+--
+-- Name: index_merge_request_diffs_on_merge_request_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_merge_request_diffs_on_merge_request_id ON merge_request_diffs USING btree (merge_request_id);
+
+
+--
+-- Name: index_merge_requests_on_assignee_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_assignee_id ON merge_requests USING btree (assignee_id);
+
+
+--
+-- Name: index_merge_requests_on_author_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_author_id ON merge_requests USING btree (author_id);
+
+
+--
+-- Name: index_merge_requests_on_created_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_created_at ON merge_requests USING btree (created_at);
+
+
+--
+-- Name: index_merge_requests_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_created_at_and_id ON merge_requests USING btree (created_at, id);
+
+
+--
+-- Name: index_merge_requests_on_milestone_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_milestone_id ON merge_requests USING btree (milestone_id);
+
+
+--
+-- Name: index_merge_requests_on_source_branch; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_source_branch ON merge_requests USING btree (source_branch);
+
+
+--
+-- Name: index_merge_requests_on_source_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_source_project_id ON merge_requests USING btree (source_project_id);
+
+
+--
+-- Name: index_merge_requests_on_target_branch; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_target_branch ON merge_requests USING btree (target_branch);
+
+
+--
+-- Name: index_merge_requests_on_target_project_id_and_iid; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_merge_requests_on_target_project_id_and_iid ON merge_requests USING btree (target_project_id, iid);
+
+
+--
+-- Name: index_merge_requests_on_title; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_merge_requests_on_title ON merge_requests USING btree (title);
+
+
+--
+-- Name: index_milestones_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_milestones_on_created_at_and_id ON milestones USING btree (created_at, id);
+
+
+--
+-- Name: index_milestones_on_due_date; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_milestones_on_due_date ON milestones USING btree (due_date);
+
+
+--
+-- Name: index_milestones_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_milestones_on_project_id ON milestones USING btree (project_id);
+
+
+--
+-- Name: index_milestones_on_project_id_and_iid; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_milestones_on_project_id_and_iid ON milestones USING btree (project_id, iid);
+
+
+--
+-- Name: index_namespaces_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_namespaces_on_created_at_and_id ON namespaces USING btree (created_at, id);
+
+
+--
+-- Name: index_namespaces_on_name; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_namespaces_on_name ON namespaces USING btree (name);
+
+
+--
+-- Name: index_namespaces_on_owner_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_namespaces_on_owner_id ON namespaces USING btree (owner_id);
+
+
+--
+-- Name: index_namespaces_on_path; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_namespaces_on_path ON namespaces USING btree (path);
+
+
+--
+-- Name: index_namespaces_on_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_namespaces_on_type ON namespaces USING btree (type);
+
+
+--
+-- Name: index_notes_on_author_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_author_id ON notes USING btree (author_id);
+
+
+--
+-- Name: index_notes_on_commit_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_commit_id ON notes USING btree (commit_id);
+
+
+--
+-- Name: index_notes_on_created_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_created_at ON notes USING btree (created_at);
+
+
+--
+-- Name: index_notes_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_created_at_and_id ON notes USING btree (created_at, id);
+
+
+--
+-- Name: index_notes_on_noteable_id_and_noteable_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_noteable_id_and_noteable_type ON notes USING btree (noteable_id, noteable_type);
+
+
+--
+-- Name: index_notes_on_noteable_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_noteable_type ON notes USING btree (noteable_type);
+
+
+--
+-- Name: index_notes_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_project_id ON notes USING btree (project_id);
+
+
+--
+-- Name: index_notes_on_project_id_and_noteable_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_project_id_and_noteable_type ON notes USING btree (project_id, noteable_type);
+
+
+--
+-- Name: index_notes_on_updated_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_notes_on_updated_at ON notes USING btree (updated_at);
+
+
+--
+-- Name: index_oauth_access_grants_on_token; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_oauth_access_grants_on_token ON oauth_access_grants USING btree (token);
+
+
+--
+-- Name: index_oauth_access_tokens_on_refresh_token; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_oauth_access_tokens_on_refresh_token ON oauth_access_tokens USING btree (refresh_token);
+
+
+--
+-- Name: index_oauth_access_tokens_on_resource_owner_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_oauth_access_tokens_on_resource_owner_id ON oauth_access_tokens USING btree (resource_owner_id);
+
+
+--
+-- Name: index_oauth_access_tokens_on_token; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_oauth_access_tokens_on_token ON oauth_access_tokens USING btree (token);
+
+
+--
+-- Name: index_oauth_applications_on_owner_id_and_owner_type; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_oauth_applications_on_owner_id_and_owner_type ON oauth_applications USING btree (owner_id, owner_type);
+
+
+--
+-- Name: index_oauth_applications_on_uid; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_oauth_applications_on_uid ON oauth_applications USING btree (uid);
+
+
+--
+-- Name: index_projects_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_projects_on_created_at_and_id ON projects USING btree (created_at, id);
+
+
+--
+-- Name: index_projects_on_creator_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_projects_on_creator_id ON projects USING btree (creator_id);
+
+
+--
+-- Name: index_projects_on_last_activity_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_projects_on_last_activity_at ON projects USING btree (last_activity_at);
+
+
+--
+-- Name: index_projects_on_namespace_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_projects_on_namespace_id ON projects USING btree (namespace_id);
+
+
+--
+-- Name: index_projects_on_star_count; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_projects_on_star_count ON projects USING btree (star_count);
+
+
+--
+-- Name: index_protected_branches_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_protected_branches_on_project_id ON protected_branches USING btree (project_id);
+
+
+--
+-- Name: index_services_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_services_on_created_at_and_id ON services USING btree (created_at, id);
+
+
+--
+-- Name: index_services_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_services_on_project_id ON services USING btree (project_id);
+
+
+--
+-- Name: index_snippets_on_author_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_snippets_on_author_id ON snippets USING btree (author_id);
+
+
+--
+-- Name: index_snippets_on_created_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_snippets_on_created_at ON snippets USING btree (created_at);
+
+
+--
+-- Name: index_snippets_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_snippets_on_created_at_and_id ON snippets USING btree (created_at, id);
+
+
+--
+-- Name: index_snippets_on_expires_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_snippets_on_expires_at ON snippets USING btree (expires_at);
+
+
+--
+-- Name: index_snippets_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_snippets_on_project_id ON snippets USING btree (project_id);
+
+
+--
+-- Name: index_snippets_on_visibility_level; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_snippets_on_visibility_level ON snippets USING btree (visibility_level);
+
+
+--
+-- Name: index_taggings_on_taggable_id_and_taggable_type_and_context; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON taggings USING btree (taggable_id, taggable_type, context);
+
+
+--
+-- Name: index_tags_on_name; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_tags_on_name ON tags USING btree (name);
+
+
+--
+-- Name: index_users_on_admin; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_users_on_admin ON users USING btree (admin);
+
+
+--
+-- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_authentication_token ON users USING btree (authentication_token);
+
+
+--
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_confirmation_token ON users USING btree (confirmation_token);
+
+
+--
+-- Name: index_users_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_users_on_created_at_and_id ON users USING btree (created_at, id);
+
+
+--
+-- Name: index_users_on_current_sign_in_at; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_users_on_current_sign_in_at ON users USING btree (current_sign_in_at);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
+-- Name: index_users_on_name; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_users_on_name ON users USING btree (name);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: index_users_on_username; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_users_on_username ON users USING btree (username);
+
+
+--
+-- Name: index_users_star_projects_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_users_star_projects_on_project_id ON users_star_projects USING btree (project_id);
+
+
+--
+-- Name: index_users_star_projects_on_user_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_users_star_projects_on_user_id ON users_star_projects USING btree (user_id);
+
+
+--
+-- Name: index_users_star_projects_on_user_id_and_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_star_projects_on_user_id_and_project_id ON users_star_projects USING btree (user_id, project_id);
+
+
+--
+-- Name: index_web_hooks_on_created_at_and_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_web_hooks_on_created_at_and_id ON web_hooks USING btree (created_at, id);
+
+
+--
+-- Name: index_web_hooks_on_project_id; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE INDEX index_web_hooks_on_project_id ON web_hooks USING btree (project_id);
+
+
+--
+-- Name: subscriptions_user_id_and_ref_fields; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX subscriptions_user_id_and_ref_fields ON subscriptions USING btree (subscribable_id, subscribable_type, user_id);
+
+
+--
+-- Name: taggings_idx; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX taggings_idx ON taggings USING btree (tag_id, taggable_id, taggable_type, context, tagger_id, tagger_type);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: gitlab; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: gitlab-psql
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "gitlab-psql";
+GRANT ALL ON SCHEMA public TO "gitlab-psql";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
