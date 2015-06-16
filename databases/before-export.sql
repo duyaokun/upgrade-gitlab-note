@@ -41,3 +41,9 @@ ALTER TABLE `projects` CHANGE `merge_requests_enabled` `merge_requests_enabled` 
 ALTER TABLE `projects` CHANGE `wiki_enabled` `wiki_enabled` CHAR(1) NOT NULL DEFAULT '1';
 ALTER TABLE `projects` CHANGE `snippets_enabled` `snippets_enabled` CHAR(1) NOT NULL DEFAULT '1';
 ALTER TABLE `projects` CHANGE `archived` `archived` CHAR(1) NOT NULL DEFAULT '0';
+
+--snippets 表格迁移
+ALTER TABLE `snippets` CHANGE `private` `visibility_level` INTEGER DEFAULT 0 NOT NULL;
+UPDATE snippets SET visibility_level=2 WHERE visibility_level=0;
+UPDATE snippets SET visibility_level=0 WHERE visibility_level=1;
+UPDATE snippets SET visibility_level=1 WHERE visibility_level=2;
