@@ -23,22 +23,9 @@ else
     python ../db_converter.py ${table}.sql ${table}.psql
   done
 
-  function tar_sql_files(){
-    local file_type=$1
-    local folder=$2
-    local tar_file=${folder}.tar.gz
-
-    rm -rf ${folder}
-    mkdir ${folder}
-    mv *.${file_type} ${folder}
-    rm ${tar_file}
-    tar zcvf ${tar_file} ${folder}
-    rm -rf ${folder}
-  }
-
   echo "start tar mysql files"
-  tar_sql_files sql mysql
+  ../tar_sql_files.sh sql mysql
 
   echo "start tar psql files"
-  tar_sql_files psql psql
+  ../tar_sql_files.sh psql psql
 fi
