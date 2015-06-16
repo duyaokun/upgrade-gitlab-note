@@ -19,7 +19,7 @@ else
   /opt/gitlab-6.9.2-1/mysql/bin/mysqldump -u bitnami -p${mysql_password} bitnami_gitlab > ../bitnami_gitlab.sql
 
   echo "prepared for export"
-  /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < ${sql_folder}before-export.sql
+  /opt/gitlab-6.9.2-1/mysql/bin/mysql -u bitnami -p${mysql_password} bitnami_gitlab < ${sql_folder}before-export.sql
 
   echo "Start export database from MySQL"
   for table in ${tables[@]}
@@ -28,7 +28,7 @@ else
   done
 
   echo "revert SQL changed"
-  /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < ${sql_folder}after-export.sql
+  /opt/gitlab-6.9.2-1/mysql/bin/mysql -u bitnami -p${mysql_password} bitnami_gitlab < ${sql_folder}after-export.sql
 
   echo "start tar mysql files"
   ./tar_sql_files.sh sql mysql
