@@ -1,7 +1,6 @@
 #!/bin/bash
 tables=("events" "forked_project_links" "keys" "issues" "merge_request_diffs" "merge_requests" "milestones" "namespaces" "protected_branches" "taggings")
 action=$1
-echo ${action}
 
 if [ "$action" == "import" ]; then
   echo "Start import database to PostgreSQL"

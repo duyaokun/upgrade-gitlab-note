@@ -1,10 +1,17 @@
+SELECT setval('events_id_seq', max(id)) FROM events;
+SELECT setval('forked_project_links_id_seq', max(id)) FROM forked_project_links;
+SELECT setval('issues_id_seq', max(id)) FROM issues;
 SELECT setval('identities_id_seq', max(id)) FROM identities;
 SELECT setval('keys_id_seq', max(id)) FROM keys;
 SELECT setval('members_id_seq', max(id)) FROM members;
+SELECT setval('merge_request_diffs_id_seq', max(id)) FROM merge_request_diffs;
 SELECT setval('merge_requests_id_seq', max(id)) FROM merge_requests;
+SELECT setval('milestones_id_seq', max(id)) FROM milestones;
+SELECT setval('namespaces_id_seq', max(id)) FROM namespaces;
 SELECT setval('notes_id_seq', max(id)) FROM notes;
 SELECT setval('projects_id_seq', max(id)) FROM projects;
 SELECT setval('protected_branches_id_seq', max(id)) FROM protected_branches;
 SELECT setval('snippets_id_seq', max(id)) FROM snippets;
+SELECT setval('taggings_id_seq', max(id)) FROM taggings;
 SELECT setval('tags_id_seq', max(id)) FROM tags;
 SELECT setval('users_id_seq', max(id)) FROM users;
