@@ -1,8 +1,8 @@
 ﻿# GitLab 7.1.0 bitnami to GitLab 7.11.4 Omnibus
 
 ## Mysql To PostgreSQL
-[7.1 旧数据库结构](gitlab.7.1.sql)
-[7.11 原始数据库](gitlab.7.11.psql)
+* [7.1 旧数据库结构](sql-files/gitlab.7.1.sql)
+* [7.11 原始数据库](sql-files/gitlab.7.11.psql)
 
 数据库差异如下:
 
@@ -36,9 +36,9 @@
 
 	> mysqldump.exe --complete-insert --no-create-db --no-create-info --compatible=postgresql --default-character-set=utf8 -r users.sql -u root test users -p
 3. 将转换好的 psql 数据库上传至新服务器
-4. 在新服务数据中执行 SQL 脚本 `before-import.psql`
+4. 在新服务数据中执行 SQL 脚本 `sql-files/before-import.psql`
 5. 在新服务器运行脚本`./upgrade-same-schema-tables.sh import`
-6. 在新服务数据中执行 SQL 脚本 `after-import.psql`
+6. 在新服务数据中执行 SQL 脚本 `sql-files/after-import.psql`
 
 ## 导入其他有变化的数据表格
 

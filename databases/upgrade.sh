@@ -1,6 +1,7 @@
 #!/bin/bash
 tables=("events" "forked_project_links" "issues" "identities" "keys" "members" "merge_request_diffs" "merge_requests" "milestones" "namespaces" "notes" "projects" "protected_branches" "snippets" "taggings" "tags" "users")
 action=$1
+sql_folder="sql-files/"
 
 if [ "$action" == "import" ]; then
   echo "Start import database to PostgreSQL"
@@ -19,7 +20,7 @@ else
   /opt/gitlab-6.9.2-1/mysql/bin/mysqldump -u bitnami -p${mysql_password} bitnami_gitlab > ../bitnami_gitlab.sql
 
   # prepared for export
-  /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < before-export.sql
+  /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < ${sql_folder}before-export.sql
 
   # export
   for table in ${tables[@]}
@@ -28,7 +29,7 @@ else
   done
 
   # revert SQL changed
-  /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < after-export.sql
+  /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < ${sql_folder}after-export.sql
 
   echo "start tar mysql files"
   ./tar_sql_files.sh sql mysql
