@@ -8,7 +8,7 @@ if [ "$action" == "import" ]; then
   for table in ${tables[@]}
   do
     echo "Start import table ${table}"
-    ../import.sh ${table}
+    ./import.sh ${table}
   done
   
 else
@@ -24,15 +24,15 @@ else
   # export
   for table in ${tables[@]}
   do
-    ../export.sh ${table} ${mysql_password}
+    ./export.sh ${table} ${mysql_password}
   done
 
   # revert SQL changed
   /opt/gitlab-6.9.2-1/mysql/bin/mysql -p${mysql_password} bitnami_gitlab < after-export.sql
 
   echo "start tar mysql files"
-  ../tar_sql_files.sh sql mysql
+  ./tar_sql_files.sh sql mysql
 
   echo "start tar psql files"
-  ../tar_sql_files.sh psql psql
+  ./tar_sql_files.sh psql psql
 fi
